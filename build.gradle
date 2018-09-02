@@ -1,5 +1,17 @@
-task hello {
-    doLast {
-        println 'Hello world!'
+import java.util.regex.Matcher
+
+task version << {
+    println readVersion('CHANGELOG')
+}
+
+def readVersion(path) {
+    def version = ''
+    File f = file(path)
+    f.eachLine {
+        Matcher match = it =~ /^Ver.*\s(.*?)$/
+        if (match && version.isEmpty()) {
+            version = match.group(1)
+         }
     }
+    return version
 }
