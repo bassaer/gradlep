@@ -1,17 +1,20 @@
+apply plugin: 'groovy'
+
 import java.util.regex.Matcher
 
 task version << {
-    println readVersion('CHANGELOG')
+    println readVersion('CHANGELOG').version
 }
 
 def readVersion(path) {
-    def version = ''
+    def log = new Log();
     File f = file(path)
     f.eachLine {
         Matcher match = it =~ /^Ver.*\s(.*?)$/
-        if (match && version.isEmpty()) {
-            version = match.group(1)
+        if (match && log.version.isEmpty()) {
+            log.version = match.group(1)
          }
     }
-    return version
+    return log
 }
+
